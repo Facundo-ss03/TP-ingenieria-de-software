@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="index.css">
     <style>
         #mi_mapa {
-            width: 100%;
-            height: 100%;
+            flex: 8;
         }
     </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -22,7 +21,7 @@
     <nav>
         <div class="nav-item-container">
             <a href="#banner-init" class="nav-item">Inicio</a>
-            <a href="#container-init" class="nav-item">Buscar talleres</a>
+            <a href="#search-container-init" class="nav-item">Buscar talleres</a>
             <a href="#about" class="nav-item">Sobre nosotros</a>
             <a href="" class="nav-item">Iniciar sesion</a>
             <a href="" class="nav-item">Registrarse</a>
@@ -31,13 +30,21 @@
 
     <div class="nav-stuffed" id="banner-init"></div>
 
-    <div class="banner">
-        <h1> Proyecto de Ingenieria de Software (Parte Uno) </h1>
-        <h2> Miembros: Facundo Sosa, Melany Stark, Facundo Rios </h2>
+    <div>
+        <div class="banner">
+            <h1> Proyecto de Ingenieria de Software (Parte Uno) </h1>
+            <h2> Miembros: Facundo Sosa, Melany Stark, Facundo Rios </h2>
+        </div>
+        <div class="banner-foot"></div>
     </div>
 
-    <div class="search-container" id="container-init">
-        <div search-section>
+    <div class="invitation" id="search-container-init">
+        <h3 class="invitation-message">¡Buscá los talleres con 
+            la temática que más te guste!</h3>
+    </div>
+
+    <div class="search-container">
+        <div class="search-section">
             <input type="text" class="search-input" placeholder="Search...">
             <select name="filters-selector" class="search-filters">
                 <option value="1"></option>
