@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Enginnering Project</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="index.css">
+    <style>
+        #mi_mapa {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+ crossorigin=""></script>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-item-container">
+            <a href="#banner-init" class="nav-item">Inicio</a>
+            <a href="#container-init" class="nav-item">Buscar talleres</a>
+            <a href="#about" class="nav-item">Sobre nosotros</a>
+            <a href="" class="nav-item">Iniciar sesion</a>
+            <a href="" class="nav-item">Registrarse</a>
+        </div>
+    </nav>
+
+    <div class="nav-stuffed" id="banner-init"></div>
+
+    <div class="banner">
+        <h1> Proyecto de Ingenieria de Software (Parte Uno) </h1>
+        <h2> Miembros: Facundo Sosa, Melany Stark, Facundo Rios </h2>
+    </div>
+
+    <div class="search-container" id="container-init">
+        <div search-section>
+            <input type="text" class="search-input" placeholder="Search...">
+            <select name="filters-selector" class="search-filters">
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+            </select>
+        </div>
+        <div id="mi_mapa"></div>
+    </div>
+
+    <footer class="about-us" id="about">
+
+        <div class="biography">
+            <p class="biography-paragraph"> 
+                Nuestra Historia y Propósito<br>
+                El Centro Cultural [Nombre del Centro] nació como un sueño 
+                compartido: el de transformar nuestro barrio en un ecosistema 
+                vivo de creación y aprendizaje. Creemos firmemente que la cultura 
+                no es algo que solo se contempla, sino algo que se construye 
+                colectivamente entre vecinos, artesanos y maestros de oficio.<br>
+
+                Nuestra misión es ser el puente que conecta el talento local con 
+                la curiosidad de los residentes. En un mundo cada vez más 
+                digital, apostamos por el reencuentro en el taller, el 
+                intercambio de saberes y la puesta en valor de la labor de 
+                nuestros miembros.<br>
+            </p>
+
+            <p class="biography-paragraph">
+                Un Espacio de Colaboración<br>
+                Más que un edificio, somos una red. A través de nuestra 
+                plataforma, facilitamos un espacio de colaboración donde 
+                los talleristas de la zona pueden difundir su trabajo y los 
+                vecinos pueden descubrir nuevas pasiones. Desde el arte 
+                tradicional hasta los nuevos oficios, cada propuesta que 
+                encontrarás aquí ha pasado por un proceso de curaduría y 
+                moderación, garantizando que nuestra comunidad crezca bajo 
+                valores de confianza y calidad.<br>
+
+            </p class="biography-paragraph">
+            
+            <p class="biography-paragraph">
+                Identidad y Cercanía<br>
+                Entendemos que el corazón de cada emprendimiento es su espacio 
+                de trabajo. Por eso, integramos tanto a los talleres que 
+                funcionan de forma independiente en sus propias sedes como a 
+                aquellos que han hecho de nuestras instalaciones su hogar. 
+                Queremos que nos encuentres en el mapa, que conozcas nuestras 
+                historias y que seas parte de este movimiento.<br>
+            </p>
+
+            <p class="biography-paragraph">
+                Cultura en Todas sus Formas<br>
+                Nuestro compromiso con la difusión no se detiene en la pantalla. 
+                Creemos en la permanencia de lo tangible; por ello, mes a mes, 
+                transformamos la actividad de nuestra red en una revista 
+                impresa y un catálogo de distribución local. Es nuestra forma 
+                de asegurar que el trabajo de nuestros colaboradores llegue a 
+                cada rincón, celebrando la identidad de nuestra comunidad.
+            </p>
+        </div>
+    </footer> 
+
+    <script>
+
+        let map = L.map('mi_mapa').setView([-34.619683, -58.756524], 12)
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([-34.619683, -58.756524]).addTo(map)
+        .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+        .openPopup();
+    </script>
+</body>
+</html>
