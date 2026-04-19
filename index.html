@@ -10,6 +10,7 @@
     <style>
         #mi_mapa {
             flex: 8;
+            border: solid black 0px;
         }
     </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -23,7 +24,6 @@
             <a href="#banner-init" class="nav-item">Inicio</a>
             <a href="#search-container-init" class="nav-item">Buscar talleres</a>
             <a href="#about" class="nav-item">Sobre nosotros</a>
-            <a href="" class="nav-item">Iniciar sesion</a>
             <a href="" class="nav-item">Registrarse</a>
         </div>
     </nav>
@@ -44,13 +44,56 @@
     </div>
 
     <div class="search-container">
-        <div class="search-section">
-            <input type="text" class="search-input" placeholder="Search...">
-            <select name="filters-selector" class="search-filters">
-                <option value="1"></option>
-                <option value="2"></option>
-                <option value="3"></option>
-            </select>
+        <div class="search-button-menu-panel">
+            <div class="search-button-menu" onclick="mostrar()">
+                <a class="search-button-menu-desplegable">+</a>
+            </div>
+        </div>
+        <div class="search-section hidden">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search...">
+                <select name="filters-selector" class="search-filters">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                </select>
+            </div>
+            <div class="search-content">
+                <div class="result-box">
+                    <div class="search-result">
+                        <div class="description">
+                            <div>Lo de Pepe</div>
+                            <div>Tipo: Taller de musica</div>
+                            <div>Direccion: Calle Falsa 123</div>
+                            <div>Abierto - Cierra a las 12:00 PM</div>
+                        </div>
+                        <img class="search-result-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Orquesta_de_C%C3%A1mara_de_Bellas_Artes_-_CONCIERTO_HABITAR_EL_68.jpg/1280px-Orquesta_de_C%C3%A1mara_de_Bellas_Artes_-_CONCIERTO_HABITAR_EL_68.jpg" alt="">
+                    </div>
+                </div>
+                <div class="result-box">
+                    <div class="search-result">
+                        <div class="description">
+                            <div>Lo de Pepe</div>
+                            <div>Tipo: Taller de mecanica</div>
+                            <div>Direccion: Calle Falsa 123</div>
+                            <div>Abierto - Cierra a las 12:00 PM</div>
+                        </div>
+                        <img class="search-result-image" src="https://img.freepik.com/vector-premium/ilustracion-taller-reparacion-automoviles-diseno-plano_98292-20558.jpg?semt=ais_hybrid&w=740&q=80" alt="">
+                    </div>
+                </div>
+                <div class="result-box">
+                    <div class="search-result">
+                        <div class="description">
+                            <div>Lo de Pepe</div>
+                            <div>Tipo: Taller de carpinteria</div>
+                            <div>Direccion: Calle Falsa 123</div>
+                            <div>Abierto - Cierra a las 12:00 PM</div>
+                        </div>
+                        <img class="search-result-image" src="https://i.pinimg.com/originals/62/cc/7f/62cc7fd9995af328cb08931fb7c42b87.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div id="mi_mapa"></div>
     </div>
@@ -64,8 +107,7 @@
                 compartido: el de transformar nuestro barrio en un ecosistema 
                 vivo de creación y aprendizaje. Creemos firmemente que la cultura 
                 no es algo que solo se contempla, sino algo que se construye 
-                colectivamente entre vecinos, artesanos y maestros de oficio.<br>
-
+                colectivamente entre vecinos, artesanos y maestros de oficio. 
                 Nuestra misión es ser el puente que conecta el talento local con 
                 la curiosidad de los residentes. En un mundo cada vez más 
                 digital, apostamos por el reencuentro en el taller, el 
@@ -119,6 +161,35 @@
         L.marker([-34.619683, -58.756524]).addTo(map)
         .bindPopup('A pretty CSS popup.<br> Easily customizable.')
         .openPopup();
+    </script>
+
+<!--
+    <script>
+        function mostrar() {
+
+            const v = document.querySelector('.search-section');
+
+            if(v.style.display == "none"){
+                v.style.display = "block";
+                return;
+            } else {
+                v.style.display = "none";
+                return;
+            }                 
+
+        }
+    </script>
+-->
+    <script>
+        function mostrar() {
+            const searchSection = document.querySelector('.search-section');
+            // Si tiene la clase 'hidden' la quita, si no la tiene la pone
+            searchSection.classList.toggle('hidden');
+
+            searchSection.addEventListener('transitionend', () => {
+                map.invalidateSize(); // 'map' es la variable donde guardaste L.map()
+            }, { once: true }); // El 'once' es para que no se quede escuchando siempre
+        }   
     </script>
 </body>
 </html>
