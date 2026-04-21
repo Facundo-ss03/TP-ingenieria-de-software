@@ -13,9 +13,9 @@
             border: solid black 0px;
         }
     </style>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
- integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
- crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
 </head>
 <body>
 
@@ -53,13 +53,12 @@
             <div class="search-box">
                 <input type="text" class="search-input" placeholder="Search...">
                 <select name="filters-selector" class="search-filters">
-                    <option value="1"></option>
-                    <option value="2"></option>
-                    <option value="3"></option>
+                    <option value="1">Nombre</option>
+                    <option value="2">Tipo</option>
                 </select>
             </div>
             <div class="search-content">
-                <div class="result-box">
+                <div id="taller1" class="result-box" onclick="alCliquearTallerEnLista('taller1')">
                     <div class="search-result">
                         <div class="description">
                             <div>Lo de Pepe</div>
@@ -70,7 +69,7 @@
                         <img class="search-result-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Orquesta_de_C%C3%A1mara_de_Bellas_Artes_-_CONCIERTO_HABITAR_EL_68.jpg/1280px-Orquesta_de_C%C3%A1mara_de_Bellas_Artes_-_CONCIERTO_HABITAR_EL_68.jpg" alt="">
                     </div>
                 </div>
-                <div class="result-box">
+                <div class="result-box" id="taller2" onclick="alCliquearTallerEnLista('taller2')">
                     <div class="search-result">
                         <div class="description">
                             <div>Lo de Pepe</div>
@@ -81,7 +80,7 @@
                         <img class="search-result-image" src="https://img.freepik.com/vector-premium/ilustracion-taller-reparacion-automoviles-diseno-plano_98292-20558.jpg?semt=ais_hybrid&w=740&q=80" alt="">
                     </div>
                 </div>
-                <div class="result-box">
+                <div class="result-box" id="taller3" onclick="alCliquearTallerEnLista('taller3')">
                     <div class="search-result">
                         <div class="description">
                             <div>Lo de Pepe</div>
@@ -93,7 +92,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div id="mi_mapa"></div>
     </div>
@@ -151,35 +149,118 @@
     </footer> 
 
     <script>
-
-        let map = L.map('mi_mapa').setView([-34.619683, -58.756524], 12)
+        // 1. Inicialización del Mapa
+        let map = L.map('mi_mapa').setView([-34.619683, -58.756524], 12);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; contributors'
         }).addTo(map);
 
-        L.marker([-34.619683, -58.756524]).addTo(map)
-        .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-        .openPopup();
-    </script>
+        // 2. Array para vincular IDs con objetos Marcador
+        const misMarcadores = {};
 
-<!--
-    <script>
-        function mostrar() {
+        // 3. Función para crear marcadores y vincularlos
+        // Esta función centraliza todo: crea el marcador, le pone el ID y lo guarda en el diccionario
+        function crearYRegistrarMarcador(id, coords, nombre) {
+            const m = L.marker(coords).addTo(map);
+            
+            // Guardamos el ID dentro del objeto del marcador para el evento click -> lista
+            m.idRelacionado = id;
+            
+            // Vinculamos un popup
+            
+            m.bindPopup(`<b>${nombre}</b>`);
 
-            const v = document.querySelector('.search-section');
+            // Guardamos el marcador en nuestro diccionario para el evento lista -> mapa
+            misMarcadores[id] = m;
 
-            if(v.style.display == "none"){
-                v.style.display = "block";
-                return;
-            } else {
-                v.style.display = "none";
-                return;
-            }                 
+            // Asignamos el evento de click en el mapa
+            m.on('click', alCliquearMarcador);
+            
+            return m;
+        }
 
+        // 4. Creamos tus 3 marcadores iniciales usando la función
+        crearYRegistrarMarcador("taller1", [-34.619683, -58.756524], "Lo de Pepe - Música");
+        crearYRegistrarMarcador("taller2", [-34.619683, -58.456524], "Taller de Mecánica");
+        crearYRegistrarMarcador("taller3", [-34.5310, -58.65524], "Carpintería Pro");
+
+        // --- FUNCIONALIDAD A: Del Mapa a la Lista ---
+        function alCliquearMarcador(e) {
+            const id = e.target.idRelacionado;
+            const elemento = document.getElementById(id);
+
+            if (elemento) {
+                // Limpiamos fondos anteriores
+                document.querySelectorAll('.result-box').forEach(el => {
+                    el.style.background = '#D0E1F9';
+                });
+
+                // Resaltamos el seleccionado
+                elemento.style.background = '#a2badd';
+                
+                // Scroll suave hacia el elemento en la lista
+                elemento.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // --- FUNCIONALIDAD B: De la Lista al Mapa ---
+        // Asegúrate de que en tu HTML tengas algo como: <div id="taller1" onclick="alCliquearTallerEnLista('taller1')">
+        /*function alCliquearTallerEnLista(idTaller) {
+            const marcador = misMarcadores[idTaller];
+
+            if (marcador) {
+                // Movemos el mapa
+                map.flyTo(marcador.getLatLng(), 15, {
+                    duration: 1.5
+                });
+
+                // Abrimos el popup
+                marcador.openPopup();
+                
+                // También podemos resaltar visualmente el div aquí si queremos
+                const elemento = document.getElementById(idTaller);
+                if (elemento) {
+                    document.querySelectorAll('.result-box').forEach(el => el.style.background = '#D0E1F9');
+                    elemento.style.background = '#a2badd';
+                }
+            }
+        }*/
+
+        function alCliquearTallerEnLista(idTaller) {
+            const marcador = misMarcadores[idTaller];
+
+            if (marcador) {
+                // 1. Lógica que ya tenías (mover mapa y abrir popup)
+                map.flyTo(marcador.getLatLng(), 15);
+                marcador.openPopup();
+
+                // 2. Nueva lógica: Llenar y abrir el panel
+                const tallerDiv = document.getElementById(idTaller);
+                // Usamos el truco de buscar dentro del div que aprendiste antes
+                const nombre = tallerDiv.querySelector('.description div:nth-child(1)').innerText;
+                const tipo = tallerDiv.querySelector('.description div:nth-child(2)').innerText;
+                const imagenSrc = tallerDiv.querySelector('img').src;
+
+                const contenido = document.getElementById('contenido-detalle');
+                contenido.innerHTML = `
+                    <img src="${imagenSrc}" style="width:100%; border-radius:15px;">
+                    <h2>${nombre}</h2>
+                    <p><strong>${tipo}</strong></p>
+                    <hr>
+                    <p>Aquí puedes agregar información extra que no entra en la lista pequeña, 
+                    como servicios detallados, teléfono, o botones de acción.</p>
+                    <button class="action-btn">Contactar</button>
+                `;
+
+                document.getElementById('detalle-taller').classList.add('open');
+            }
+        }
+
+        function cerrarPanel() {
+            document.getElementById('detalle-taller').classList.remove('open');
         }
     </script>
--->
     <script>
         function mostrar() {
             const searchSection = document.querySelector('.search-section');
